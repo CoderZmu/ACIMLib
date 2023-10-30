@@ -26,7 +26,7 @@
 		</data>
 		<key>Headers/ACCoreClient.h</key>
 		<data>
-		ehTRwV8fLOVFwfVLWES3mh7s5hQ=
+		5lP/8Cszpz46qGqkLTzr+Da6wvM=
 		</data>
 		<key>Headers/ACFileMessage.h</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>Headers/ACStatusDefine.h</key>
 		<data>
-		gdhkpk+GG7KsDRZvLaEbhxbmF8I=
+		vTefe1PvTOoMKw9BEEyZjAeb8qA=
 		</data>
 		<key>Headers/ACTextMessage.h</key>
 		<data>
@@ -198,11 +198,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ehTRwV8fLOVFwfVLWES3mh7s5hQ=
+			5lP/8Cszpz46qGqkLTzr+Da6wvM=
 			</data>
 			<key>hash2</key>
 			<data>
-			cnU61nIlmG47Ahy4cCajaPkQ1EYVlbGh52OEiNG0Ga8=
+			AgYMuVh4HpPyhGBO+EctOE5ojq7ztlq8+Y3hhzy4thM=
 			</data>
 		</dict>
 		<key>Headers/ACFileMessage.h</key>
@@ -451,11 +451,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gdhkpk+GG7KsDRZvLaEbhxbmF8I=
+			vTefe1PvTOoMKw9BEEyZjAeb8qA=
 			</data>
 			<key>hash2</key>
 			<data>
-			+9l4XzV4W8+f0Lnw0w9hrdd0EYxG0+e9UQwew0yAcwo=
+			p5jTeMO+1MKOtVUNvxwDjiAIQlJJr6RX5ZmqZR4KPJ0=
 			</data>
 		</dict>
 		<key>Headers/ACTextMessage.h</key>

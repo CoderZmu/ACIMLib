@@ -413,6 +413,11 @@ typedef NS_ENUM(NSInteger, ACErrorCode) {
     AC_MSG_REPLACED_SENSITIVE_WORD = 21502,
     
     /*!
+     消息扩展/修改，但是原始消息不存在
+     */
+    AC_ORIGINAL_MESSAGE_NOT_EXIST = 22201,
+    
+    /*!
      当前用户不在该群组中
      */
     NOT_IN_GROUP = 22406,

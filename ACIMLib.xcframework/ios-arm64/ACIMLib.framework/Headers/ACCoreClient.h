@@ -677,14 +677,42 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
  @discussion 此方法用于在群组和讨论组中发送消息给其中的部分用户，其它用户不会收到这条消息。
 
- @warning 此方法目前仅支持普通群组和讨论组。
+ @warning 此方法目前仅支持普通群组。
 
  @remarks 消息操作
  */
 - (ACMessage *)sendDirectionalMessage:(ACMessage *)message
-                         toUserIdList:(NSArray *)userIdList
+                         toUserIdList:(NSArray<NSString *> *)userIdList
                          successBlock:(void (^)(ACMessage *successMessage))successBlock
                            errorBlock:(void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock;
+
+
+/*!
+ 发送定向媒体消息（图片消息或文件消息）
+ 
+ @param message             将要发送的消息实体（需要保证 message 中的 conversationType，targetId，messageContent 是有效值)
+ @param userIdList       接收消息的用户 ID 列表
+ @param progressBlock       消息发送进度更新的回调 [progress:当前的发送进度, 0 <= progress <= 100, progressMessage:消息实体]
+ @param successBlock        消息发送成功的回调 [successMessage:消息实体]
+ @param errorBlock          消息发送失败的回调 [nErrorCode:发送失败的错误码, errorMessage:消息实体]
+ @param cancelBlock         用户取消了消息发送的回调 [cancelMessage:消息实体]
+ @return                    发送的消息实体
+ 
+ 
+
+ 如果您需要上传文件到自己的服务器，构建一个 ACFileMessage 对象，
+ 并将 ACFileMessage 中的 fileUrl 字段设置为上传成功的 URL 地址，然后使用 ACCoreClient 的
+ sendMessage:toUserIdList:successBlock:errorBlock:方法进行发送，不要使用此方法。
+ 
+ 
+ @remarks 消息操作
+ */
+- (nullable ACMessage *)sendDirectionalMediaMessage:(ACMessage *)message
+                                       toUserIdList:(NSArray<NSString *> *)userIdList
+                                           progress:(nullable void (^)(int progress, ACMessage *progressMessage))progressBlock
+                                       successBlock:(nullable void (^)(ACMessage *successMessage))successBlock
+                                         errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock
+                                             cancel:(nullable void (^)(ACMessage *cancelMessage))cancelBlock;
 
 
 /*!
