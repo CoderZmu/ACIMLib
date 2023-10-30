@@ -96,17 +96,17 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  消息内容中携带的发送者的用户信息
  */
-@property (nonatomic, strong) ACUserInfo *senderUserInfo;
+@property (nonatomic, strong, nullable) ACUserInfo *senderUserInfo;
 
 /*!
  消息中的 @ 提醒信息
  */
-@property (nonatomic, strong) ACMentionedInfo *mentionedInfo;
+@property (nonatomic, strong, nullable) ACMentionedInfo *mentionedInfo;
 
 /*!
  消息的附加信息
  */
-@property (nonatomic, copy) NSString *extra;
+@property (nonatomic, copy, nullable) NSString *extra;
 
 
 /**

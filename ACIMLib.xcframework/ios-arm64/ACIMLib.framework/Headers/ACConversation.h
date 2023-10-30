@@ -31,12 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 超级群频道Id
-@property (nonatomic, copy) NSString *channelId;
+@property (nonatomic, copy, nullable) NSString *channelId;
 
 /*!
  会话的标题
  */
-@property (nonatomic, copy) NSString *conversationTitle;
+@property (nonatomic, copy, nullable) NSString *conversationTitle;
 
 /*!
  会话中的未读消息数量
@@ -72,17 +72,17 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  会话中存在的草稿
  */
-@property (nonatomic, copy) NSString *draft;
+@property (nonatomic, copy, nullable) NSString *draft;
 
 /*!
  会话中最后一条消息的类型名
  */
-@property (nonatomic, copy) NSString *objectName;
+@property (nonatomic, copy, nullable) NSString *objectName;
 
 /*!
  会话中最后一条消息的发送者用户 ID
  */
-@property (nonatomic, copy) NSString *senderUserId;
+@property (nonatomic, copy, nullable) NSString *senderUserId;
 
 /*!
  会话中最后一条消息的消息 ID
@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  会话中最后一条消息的内容
  */
-@property (nonatomic, strong) ACMessageContent *lastestMessage;
+@property (nonatomic, strong, nullable) ACMessageContent *lastestMessage;
 
 /*!
  会话中最后一条消息的方向

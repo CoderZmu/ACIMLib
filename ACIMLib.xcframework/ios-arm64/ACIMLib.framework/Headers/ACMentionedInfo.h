@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @discussion 如果 type 是 @ 所有人，则可以传 nil
  */
-@property (nonatomic, strong) NSArray<NSNumber *> *userIdList;
+@property (nonatomic, strong, nullable) NSArray<NSString *> *userIdList;
 
 /*!
  是否 @ 了我

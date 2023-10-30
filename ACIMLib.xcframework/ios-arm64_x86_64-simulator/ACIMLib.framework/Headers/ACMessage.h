@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  超级群频道Id
  */
-@property (nonatomic, copy) NSString *channelId;
+@property (nonatomic, copy, nullable) NSString *channelId;
 
 /*!
  消息的 ID
@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  消息的附加字段
  */
-@property (nonatomic, copy) NSString *extra;
+@property (nonatomic, copy, nullable) NSString *extra;
 
 
 /*!
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  消息推送配置
  */
-@property (nonatomic, strong) ACMessagePushConfig *messagePushConfig;
+@property (nonatomic, strong, nullable) ACMessagePushConfig *messagePushConfig;
 
 /*!
  是否是离线消息，只在接收消息的回调方法中有效，如果消息为离线消息，则为 YES ，其他情况均为 NO
@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion 扩展信息只支持单聊和群组，其它会话类型不能设置扩展信息
  @discussion 默认消息扩展字典 key 长度不超过 32 ，value 长度不超过 4096 ，单次设置扩展数量最大为 20，消息的扩展总数不能超过 300
 */
-@property (nonatomic, strong) NSDictionary<NSString *, NSString *> *expansionDic;
+@property (nonatomic, strong, nullable) NSDictionary<NSString *, NSString *> *expansionDic;
 
 
 /*!

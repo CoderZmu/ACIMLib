@@ -36,11 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
  不再允许外部赋值，为只读属性
  本地地址使用 localPath， 远端地址使用 remoteUrl
  */
-@property (nonatomic, copy, readonly) NSString *imageUrl;
+@property (nonatomic, copy, readonly, nullable) NSString *imageUrl;
 /*!
  图片消息的缩略图数据
  */
-@property (nonatomic, strong) NSData *thumbnailData;
+@property (nonatomic, strong, nullable) NSData *thumbnailData;
 
 /*!
  是否发送原图

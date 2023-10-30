@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @discussion 命令的扩展数据，可以为任意字符串，如存放您定义的json数据。
  */
-@property (nonatomic, copy) NSString *data;
+@property (nonatomic, copy, nullable) NSString *data;
 
 /*!
  初始化命令消息
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param data    命令的扩展数据
  @return        命令消息对象
  */
-+ (instancetype)messageWithName:(NSString *)name data:(NSString *)data;
++ (instancetype)messageWithName:(NSString *)name data:(nullable NSString *)data;
 
 
 @end

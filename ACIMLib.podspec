@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ACIMLib'
-  s.version          = '1.2.1'
+  s.version          = '1.2.2'
   s.summary          = 'IMLib SDK'
   s.description  = <<-DESC
                        IMLib SDK for iOS.

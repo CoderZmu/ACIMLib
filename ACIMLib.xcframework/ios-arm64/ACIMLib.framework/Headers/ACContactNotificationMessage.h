@@ -81,6 +81,6 @@
                              sourceUserId:(NSString *)sourceUserId
                              targetUserId:(NSString *)targetUserId
                                   message:(NSString *)message
-                                    extra:(NSString *)extra;
+                                    extra:(nullable NSString *)extra;
 
 @end

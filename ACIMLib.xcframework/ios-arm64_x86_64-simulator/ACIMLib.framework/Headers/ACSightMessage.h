@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  缩略图
  */
-@property (nonatomic, strong) NSData *thumbnailData;
+@property (nonatomic, strong, nullable) NSData *thumbnailData;
 
 /**
  创建小视频消息的便利构造方法

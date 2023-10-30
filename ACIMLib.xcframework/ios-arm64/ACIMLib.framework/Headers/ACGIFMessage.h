@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  缩略图
  */
-@property (nonatomic, strong) NSData *thumbnailData;
+@property (nonatomic, strong, nullable) NSData *thumbnailData;
 
 /*!
  初始化 GIF 消息

@@ -127,8 +127,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  此方法的回调并非为原调用线程，您如果需要进行 UI 操作，请注意切换到主线程。
  */
 - (void)connectWithToken:(NSString *)token
-                 success:(ACConnectSuccessBlock)successBlock
-                   error:(ACConnectErrorBlock)errorBlock;
+                 success:(nullable ACConnectSuccessBlock)successBlock
+                   error:(nullable ACConnectErrorBlock)errorBlock;
 
 
 /*!
@@ -293,7 +293,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 会话列表
 
  */
-- (NSArray *)getConversationList:(NSArray *)conversationTypeList;
+- (nullable NSArray<ACConversation *> *)getConversationList:(NSArray<NSNumber *> *)conversationTypeList;
 
 
 /*!
@@ -311,7 +311,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 会话列表
 
  */
-- (NSArray *)getConversationList:(NSArray *)conversationTypeList count:(int)count startTime:(long long)startTime;
+- (nullable NSArray<ACConversation *> *)getConversationList:(NSArray<NSNumber *> *)conversationTypeList count:(int)count startTime:(long long)startTime;
 
 /*!
    获取单个会话数据
@@ -365,7 +365,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 会话列表
 
  */
-- (NSArray<ACConversation *> *)getTopConversationList:(NSArray *)conversationTypeList;
+- (NSArray<ACConversation *> *)getTopConversationList:(NSArray<NSNumber *> *)conversationTypeList;
 
 
 #pragma mark - 会话中的草稿操作
@@ -439,7 +439,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 会话
 
  */
-- (int)getUnreadCountWithConTypes:(NSArray *)conversationTypes;
+- (int)getUnreadCountWithConTypes:(NSArray<NSNumber *> *)conversationTypes;
 
 
 /*!
@@ -504,10 +504,9 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @return                    发送的消息实体
 
    @discussion 当接收方离线并允许远程推送时，会收到远程推送。
-   远程推送中包含两部分内容，一是 pushContent ，用于显示；二是 pushData ，用于携带不显示的数据。
 
-   SDK 内置的消息类型，如果您将 pushContent 和 pushData 置为 nil ，会使用默认的推送格式进行远程推送。
-   自定义类型的消息，需要您自己设置 pushContent 和 pushData 来定义推送内容，否则将不会进行远程推送。
+   SDK 内置的消息类型，如果您将 pushConfig 置为 nil ，会使用默认的推送格式进行远程推送。
+   自定义类型的消息，需要您自己设置 pushConfig 来定义推送内容，否则将不会进行远程推送。
 
    如果您使用此方法发送图片消息，需要您自己实现图片的上传，构建一个 ACImageMessage 对象，
    并将 ACImageMessage 中的 imageUrl 字段设置为上传成功的 URL 地址，然后使用此方法发送。
@@ -519,13 +518,13 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (ACMessage *)sendMessage:(ACConversationType)conversationType
+- (nullable ACMessage *)sendMessage:(ACConversationType)conversationType
                   targetId:(NSString *)targetId
                    content:(ACMessageContent *)content
                 pushConfig:(nullable ACMessagePushConfig *)pushConfig
                 sendConfig:(nullable ACSendMessageConfig *)sendConfig
-                   success:(void (^)(long messageId))successBlock
-                     error:(void (^)(ACErrorCode nErrorCode, long messageId))errorBlock;
+                   success:(nullable void (^)(long messageId))successBlock
+                     error:(nullable void (^)(ACErrorCode nErrorCode, long messageId))errorBlock;
 
 /*!
    发送媒体消息（图片消息或文件消息）
@@ -543,34 +542,31 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @return                    发送的消息实体
 
    @discussion 当接收方离线并允许远程推送时，会收到远程推送。
-   远程推送中包含两部分内容，一是 pushContent，用于显示；二是 pushData，用于携带不显示的数据。
 
-   SDK 内置的消息类型，如果您将 pushContent 和 pushData 置为 nil，会使用默认的推送格式进行远程推送。
-   自定义类型的消息，需要您自己设置 pushContent 和 pushData 来定义推送内容，否则将不会进行远程推送。
+   SDK 内置的消息类型，如果您将 pushConfig 置为 nil，会使用默认的推送格式进行远程推送。
+   自定义类型的消息，需要您自己设置pushConfig来定义推送内容，否则将不会进行远程推送。
 
    如果您需要上传图片到自己的服务器，需要构建一个 ACImageMessage 对象，
-   并将 ACImageMessage 中的 imageUrl 字段设置为上传成功的 URL 地址，然后使用 ACIMLibClient 的
-   sendMessage:targetId:content:pushContent:pushData:success:error:方法
-   或 sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
+   并将 ACImageMessage 中的 imageUrl 字段设置为上传成功的 URL 地址，然后使用 ACCoreClient 的
+   sendMessage:targetId:content:pushConfig:success:error:方法进行发送，不要使用此方法。
 
    如果您需要上传文件到自己的服务器，构建一个 ACFileMessage 对象，
-   并将 ACFileMessage 中的 fileUrl 字段设置为上传成功的 URL 地址，然后使用 ACIMLibClient 的
-   sendMessage:targetId:content:pushContent:pushData:success:error:方法
-   或 sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
+   并将 ACFileMessage 中的 fileUrl 字段设置为上传成功的 URL 地址，然后使用 ACCoreClient 的
+   sendMessage:targetId:content:pushConfig:success:error:方法进行发送，不要使用此方法。
 
 
    @remarks 消息操作
 
  */
-- (ACMessage *)sendMediaMessage:(ACConversationType)conversationType
+- (nullable ACMessage *)sendMediaMessage:(ACConversationType)conversationType
                        targetId:(NSString *)targetId
                         content:(ACMessageContent *)content
                      pushConfig:(nullable ACMessagePushConfig *)pushConfig
                      sendConfig:(nullable ACSendMessageConfig *)sendConfig
-                       progress:(void (^)(int progress, long messageId))progressBlock
-                        success:(void (^)(long messageId))successBlock
-                          error:(void (^)(ACErrorCode errorCode, long messageId))errorBlock
-                         cancel:(void (^)(long messageId))cancelBlock;
+                       progress:(nullable void (^)(int progress, long messageId))progressBlock
+                        success:(nullable void (^)(long messageId))successBlock
+                          error:(nullable void (^)(ACErrorCode errorCode, long messageId))errorBlock
+                         cancel:(nullable void (^)(long messageId))cancelBlock;
 
 /*!
  发送消息
@@ -589,9 +585,9 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  
  @remarks 消息操作
  */
-- (ACMessage *)sendMessage:(ACMessage *)message
-              successBlock:(void (^)(ACMessage *successMessage))successBlock
-                errorBlock:(void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock;
+- (nullable ACMessage *)sendMessage:(ACMessage *)message
+              successBlock:(nullable void (^)(ACMessage *successMessage))successBlock
+                         errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage * _Nullable  errorMessage))errorBlock;
 
 
 /*!
@@ -606,23 +602,21 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
  
  如果您需要上传图片到自己的服务器，需要构建一个 ACImageMessage 对象，
- 并将 ACImageMessage 中的 remoteUrl 字段设置为上传成功的 URL 地址，然后使用 ACIMClient 的
- sendMessage:targetId:content:pushContent:pushData:success:error:方法
- 或 sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
+ 并将 ACImageMessage 中的 remoteUrl 字段设置为上传成功的 URL 地址，然后使用 ACCoreClient 的
+ sendMessage:successBlock:errorBlock:方法进行发送，不要使用此方法。
  
  如果您需要上传文件到自己的服务器，构建一个 ACFileMessage 对象，
- 并将 ACFileMessage 中的 remoteUrl 字段设置为上传成功的 URL 地址，然后使用 ACIMClient 的
- sendMessage:targetId:content:pushContent:pushData:success:error:方法
- 或 sendMessage:targetId:content:pushContent:success:error:方法进行发送，不要使用此方法。
+ 并将 ACFileMessage 中的 remoteUrl 字段设置为上传成功的 URL 地址，然后使用 ACCoreClient 的
+ sendMessage:successBlock:errorBlock:方法进行发送，不要使用此方法。
  
  
  @remarks 消息操作
  */
-- (ACMessage *)sendMediaMessage:(ACMessage *)message
-                       progress:(void (^)(int progress, ACMessage *progressMessage))progressBlock
-                   successBlock:(void (^)(ACMessage *successMessage))successBlock
-                     errorBlock:(void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock
-                         cancel:(void (^)(ACMessage *cancelMessage))cancelBlock;
+- (nullable ACMessage *)sendMediaMessage:(ACMessage *)message
+                       progress:(nullable void (^)(int progress, ACMessage *progressMessage))progressBlock
+                   successBlock:(nullable void (^)(ACMessage *successMessage))successBlock
+                     errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage * _Nullable errorMessage))errorBlock
+                         cancel:(nullable void (^)(ACMessage * _Nullable cancelMessage))cancelBlock;
 
 /*!
  取消发送中的媒体信息
@@ -656,14 +650,14 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (ACMessage *)sendDirectionalMessage:(ACConversationType)conversationType
+- (nullable ACMessage *)sendDirectionalMessage:(ACConversationType)conversationType
                              targetId:(NSString *)targetId
-                         toUserIdList:(NSArray *)userIdList
+                         toUserIdList:(NSArray<NSString *> *)userIdList
                               content:(ACMessageContent *)content
-                           pushConfig:(ACMessagePushConfig *)pushConfig
-                           sendConfig:(ACSendMessageConfig *)sendConfig
-                              success:(void (^)(long messageId))successBlock
-                                error:(void (^)(ACErrorCode nErrorCode, long messageId))errorBlock;
+                           pushConfig:(nullable ACMessagePushConfig *)pushConfig
+                           sendConfig:(nullable ACSendMessageConfig *)sendConfig
+                              success:(nullable void (^)(long messageId))successBlock
+                                error:(nullable void (^)(ACErrorCode nErrorCode, long messageId))errorBlock;
 
 /*!
  发送定向消息
@@ -681,10 +675,10 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
  @remarks 消息操作
  */
-- (ACMessage *)sendDirectionalMessage:(ACMessage *)message
+- (nullable ACMessage *)sendDirectionalMessage:(ACMessage *)message
                          toUserIdList:(NSArray<NSString *> *)userIdList
-                         successBlock:(void (^)(ACMessage *successMessage))successBlock
-                           errorBlock:(void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock;
+                         successBlock:(nullable void (^)(ACMessage *successMessage))successBlock
+                           errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage * _Nullable errorMessage))errorBlock;
 
 
 /*!
@@ -711,8 +705,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
                                        toUserIdList:(NSArray<NSString *> *)userIdList
                                            progress:(nullable void (^)(int progress, ACMessage *progressMessage))progressBlock
                                        successBlock:(nullable void (^)(ACMessage *successMessage))successBlock
-                                         errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage *errorMessage))errorBlock
-                                             cancel:(nullable void (^)(ACMessage *cancelMessage))cancelBlock;
+                                         errorBlock:(nullable void (^)(ACErrorCode nErrorCode, ACMessage * _Nullable errorMessage))errorBlock
+                                             cancel:(nullable void (^)(ACMessage * _Nullable cancelMessage))cancelBlock;
 
 
 /*!
@@ -731,7 +725,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (ACMessage *)insertOutgoingMessage:(ACConversationType)conversationType
+- (nullable ACMessage *)insertOutgoingMessage:(ACConversationType)conversationType
                             targetId:(NSString *)targetId
                           sentStatus:(ACSentStatus)sentStatus
                              content:(ACMessageContent *)content
@@ -751,10 +745,10 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 多媒体下载
  */
 - (void)downloadMediaMessage:(long)messageId
-                    progress:(void (^)(int progress))progressBlock
-                     success:(void (^)(NSString *mediaPath))successBlock
-                       error:(void (^)(ACErrorCode errorCode))errorBlock
-                      cancel:(void (^)(void))cancelBlock;
+                    progress:(nullable void (^)(int progress))progressBlock
+                     success:(nullable void (^)(NSString *mediaPath))successBlock
+                       error:(nullable void (^)(ACErrorCode errorCode))errorBlock
+                      cancel:(nullable void (^)(void))cancelBlock;
 
 /*!
    取消下载中的媒体信息
@@ -787,8 +781,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 - (void)setConversationNotificationStatus:(ACConversationType)conversationType
                                  targetId:(NSString *)targetId
                                 isBlocked:(BOOL)isBlocked
-                                  success:(void (^)(ACConversationNotificationStatus nStatus))successBlock
-                                    error:(void (^)(ACErrorCode status))errorBlock;
+                                  success:(nullable void (^)(ACConversationNotificationStatus nStatus))successBlock
+                                    error:(nullable void (^)(ACErrorCode status))errorBlock;
 
 /*!
    查询会话的消息提醒状态
@@ -803,8 +797,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  */
 - (void)getConversationNotificationStatus:(ACConversationType)conversationType
                                  targetId:(NSString *)targetId
-                                  success:(void (^)(ACConversationNotificationStatus nStatus))successBlock
-                                    error:(void (^)(ACErrorCode status))errorBlock;
+                                  success:(nullable void (^)(ACConversationNotificationStatus nStatus))successBlock
+                                    error:(nullable void (^)(ACErrorCode status))errorBlock;
 
 /*!
    获取消息免打扰会话列表
@@ -817,7 +811,60 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 会话列表
 
  */
-- (NSArray<ACConversation *> *)getBlockedConversationList:(NSArray *)conversationTypeList;
+- (NSArray<ACConversation *> *)getBlockedConversationList:(NSArray<NSNumber *> *)conversationTypeList;
+
+
+/*!
+ 设置会话的消息提醒状态
+
+ @param conversationType            会话类型
+ @param targetId                    会话 ID
+ @param level                       消息通知级别
+ @param successBlock                设置成功的回调
+ @param errorBlock                  设置失败的回调 [status:设置失败的错误码]
+
+  
+ @remarks 会话
+ */
+- (void)setConversationNotificationLevel:(ACConversationType)conversationType
+                                       targetId:(NSString *)targetId
+                                          level:(ACPushNotificationLevel)level
+                                        success:(nullable void (^)(void))successBlock
+                                          error:(nullable void (^)(ACErrorCode status))errorBlock;
+
+/*!
+ 设置一组会话的消息提醒状态
+
+ @param conversationType            会话类型
+ @param targetIdList                    会话 ID列表
+ @param level                       消息通知级别
+ @param successBlock                设置成功的回调
+ @param errorBlock                  设置失败的回调 [status:设置失败的错误码]
+  
+ @remarks 会话
+ */
+- (void)setConversationListNotificationLevel:(ACConversationType)conversationType
+                                       targetIdList:(NSArray<NSString *> *)targetIdList
+                                          level:(ACPushNotificationLevel)level
+                                        success:(nullable void (^)(void))successBlock
+                                          error:(nullable void (^)(ACErrorCode status))errorBlock;
+
+
+/*!
+  查询消息通知级别
+
+ @param conversationType    会话类型
+ @param targetId            会话 ID
+ @param successBlock        设置成功的回调 [level:消息通知级别]
+ @param errorBlock          查询失败的回调 [status:设置失败的错误码]
+
+ @remarks 会话
+ */
+- (void)getConversationChannelNotificationLevel:(ACConversationType)conversationType
+                                       targetId:(NSString *)targetId
+                                        success:(nullable void (^)(ACPushNotificationLevel level))successBlock
+                                          error:(nullable void (^)(ACErrorCode status))errorBlock;
+
 
 #pragma mark - 消息接收监听
 
@@ -859,9 +906,9 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
  */
 - (void)recallMessage:(ACMessage *)message
-          pushContent:(NSString *)pushContent
-              success:(void (^)(long messageId))successBlock
-                error:(void (^)(ACErrorCode errorcode))errorBlock;
+          pushContent:(nullable NSString *)pushContent
+              success:(nullable void (^)(long messageId))successBlock
+                error:(nullable void (^)(ACErrorCode errorcode))errorBlock;
 
 
 #pragma mark - 消息操作
@@ -885,7 +932,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  
  @remarks 消息操作
  */
-- (NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
+- (nullable NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
                                     targetId:(NSString *)targetId
                              oldestMessageId:(long)oldestMessageId
                                        count:(int)count;
@@ -910,7 +957,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  
  @remarks 消息操作
  */
-- (NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
+- (nullable NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
                                     targetId:(NSString *)targetId
                                   objectName:(nullable NSString *)objectName
                              oldestMessageId:(long)oldestMessageId
@@ -937,7 +984,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
+- (nullable NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
                        targetId:(NSString *)targetId
                      objectName:(nullable NSString *)objectName
                   baseMessageId:(long)baseMessageId
@@ -970,7 +1017,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
+- (nullable NSArray<ACMessage *> *)getHistoryMessages:(ACConversationType)conversationType
                        targetId:(NSString *)targetId
                     objectNames:(NSArray<NSString *> *)objectNames
                        sentTime:(long long)sentTime
@@ -1002,8 +1049,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
                     targetId:(NSString *)targetId
                   recordTime:(long long)recordTime
                  clearRemote:(BOOL)clearRemote
-                     success:(void (^)(void))successBlock
-                       error:(void (^)(ACErrorCode status))errorBlock;
+                     success:(nullable void (^)(void))successBlock
+                       error:(nullable void (^)(ACErrorCode status))errorBlock;
 
 /*!
    从服务器端获取之前的历史消息
@@ -1025,7 +1072,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
                         targetId:(NSString *)targetId
                       recordTime:(long long)recordTime
                            count:(int)count
-                        complete:(void (^)(NSArray<ACMessage *> *messages, ACErrorCode code))complete;
+                        complete:(nullable void (^)(NSArray<ACMessage *> *messages, ACErrorCode code))complete;
 
 /*!
  获取历史消息
@@ -1058,7 +1105,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
    @remarks 高级功能
  */
-- (NSArray<ACMessage *> *)getUnreadMentionedMessages:(ACConversationType)conversationType targetId:(NSString *)targetId;
+- (nullable NSArray<ACMessage *> *)getUnreadMentionedMessages:(ACConversationType)conversationType targetId:(NSString *)targetId;
 
 /*!
    通过 messageId 获取消息实体
@@ -1069,7 +1116,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (ACMessage *)getMessage:(long)messageId;
+- (nullable ACMessage *)getMessage:(long)messageId;
 
 /*!
    通过全局唯一 ID 获取消息实体
@@ -1079,7 +1126,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
    @remarks 消息操作
  */
-- (ACMessage *)getMessageByUId:(long)messageUId;
+- (nullable ACMessage *)getMessageByUId:(long)messageUId;
 
 /**
  * 获取会话里第一条未读消息。
@@ -1092,7 +1139,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  *  用户在线接收的超级群未读消息已经保存到本地数据库，可以通过此接口获取到
  *  用户离线的超级群未读消息，用户在线之后不收离线未读消息，通过此接口获取第一条未读消息为空
  */
-- (ACMessage *)getFirstUnreadMessage:(ACConversationType)conversationType targetId:(NSString *)targetId;
+- (nullable ACMessage *)getFirstUnreadMessage:(ACConversationType)conversationType targetId:(NSString *)targetId;
 
 /*!
    删除消息
@@ -1120,8 +1167,8 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
  */
 - (void)deleteMessages:(ACConversationType)conversationType
               targetId:(NSString *)targetId
-               success:(void (^)(void))successBlock
-                 error:(void (^)(ACErrorCode status))errorBlock;
+               success:(nullable void (^)(void))successBlock
+                 error:(nullable void (^)(ACErrorCode status))errorBlock;
 
 
 
@@ -1169,7 +1216,7 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
    @remarks 消息操作
 
  */
-- (NSArray<ACMessage *> *)searchMessages:(ACConversationType)conversationType
+- (nullable NSArray<ACMessage *> *)searchMessages:(ACConversationType)conversationType
                                 targetId:(NSString *)targetId
                                  keyword:(NSString *)keyword
                                    count:(int)count
@@ -1190,10 +1237,10 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
    @remarks 高级功能
  */
-- (void)updateMessageExpansion:(NSDictionary<NSString *, NSString *> *)expansionDic
+- (void)updateMessageExpansion:(nullable NSDictionary<NSString *, NSString *> *)expansionDic
                      messageId:(long)messageId
-                       success:(void (^)(void))successBlock
-                         error:(void (^)(ACErrorCode status))errorBlock;
+                       success:(nullable void (^)(void))successBlock
+                         error:(nullable void (^)(ACErrorCode status))errorBlock;
 
 
 #pragma mark - 日志
@@ -1202,9 +1249,9 @@ typedef void (^ACConnectErrorBlock)(ACConnectErrorCode errorCode);
 
 #pragma mark - 工具类方法
 /*!
-   获取当前 IMLibClient SDK的版本号
+   获取当前 IMCoreClient SDK的版本号
 
-   @return 当前 IMLibClient SDK 的版本号，如: @"2.0.0"
+   @return 当前 IMCoreClient SDK 的版本号，如: @"2.0.0"
 
    @remarks 数据获取
  */

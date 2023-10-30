@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  撤回的文本消息的内容
 */
-@property (nonatomic, copy) NSString *recallContent;
+@property (nonatomic, copy, nullable) NSString *recallContent;
 
 /*!
  撤回动作的时间（毫秒）

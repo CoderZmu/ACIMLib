@@ -31,12 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  文件类型
  */
-@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy, nullable) NSString *type;
 
 /*!
  文件的网络地址
  */
-@property (nonatomic, readonly) NSString *fileUrl;
+@property (nonatomic, readonly, nullable) NSString *fileUrl;
 
 /*!
  初始化文件消息

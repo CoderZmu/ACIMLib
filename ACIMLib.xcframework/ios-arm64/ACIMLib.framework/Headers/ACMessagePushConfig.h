@@ -18,17 +18,17 @@ NS_ASSUME_NONNULL_BEGIN
     内置消息：单聊通知标题显示为发送者名称，群聊通知标题显示为群名称。
     自定义消息：默认不显示标题。
  */
-@property (nonatomic, copy) NSString *pushTitle;
+@property (nonatomic, copy, nullable) NSString *pushTitle;
 
 /*!
  推送内容
  */
-@property (nonatomic, copy) NSString *pushContent;
+@property (nonatomic, copy, nullable) NSString *pushContent;
 
 /*!
  远程推送附加信息
  */
-@property (nonatomic, copy) NSString *pushData;
+@property (nonatomic, copy, nullable) NSString *pushData;
 
 /*!
  是否强制显示通知详情
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  推送模板 ID，设置后根据目标用户通过 SDK RCPushProfile 中的 setPushLauguageCode 设置的语言环境，匹配模板中设置的语言内容进行推送，未匹配成功时使用默认内容进行推送，模板内容在“开发者后台-自定义推送文案”中进行设置。
  注：ACMessagePushConfig 中的 Title 和 PushContent 优先级高于模板 ID（templateId）中对应的标题和推送内容。
  */
-@property (nonatomic, copy) NSString *templateId;
+@property (nonatomic, copy, nullable) NSString *templateId;
 
 
 - (NSString *)encodePushConfig;

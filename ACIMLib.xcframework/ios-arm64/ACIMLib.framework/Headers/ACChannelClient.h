@@ -395,7 +395,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setConversationChannelNotificationLevel:(ACConversationType)conversationType
                                        targetId:(NSString *)targetId
-                                      channelId:(NSString *)channelId
+                                      channelId:(nullable NSString *)channelId
                                           level:(ACPushNotificationLevel)level
                                         success:(void (^)(void))successBlock
                                           error:(void (^)(ACErrorCode status))errorBlock;
@@ -434,7 +434,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)getConversationChannelNotificationLevel:(ACConversationType)conversationType
                                        targetId:(NSString *)targetId
-                                      channelId:(NSString *)channelId
+                                      channelId:(nullable NSString *)channelId
                                         success:(void (^)(ACPushNotificationLevel level))successBlock
                                           error:(void (^)(ACErrorCode status))errorBlock;
 

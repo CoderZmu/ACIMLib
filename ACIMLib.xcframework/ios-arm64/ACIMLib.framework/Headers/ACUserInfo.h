@@ -21,12 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  用户名称
  */
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy, nullable) NSString *name;
 
 /*!
  用户头像的 URL
  */
-@property (nonatomic, copy) NSString *portraitUri;
+@property (nonatomic, copy, nullable) NSString *portraitUri;
 
 /*!
  用户备注
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  用户信息附加字段
 
  */
-@property (nonatomic, copy) NSString *extra;
+@property (nonatomic, copy, nullable) NSString *extra;
 
 /*!
  用户信息的初始化方法
