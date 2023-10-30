@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ACIMLib'
-  s.version          = '1.2.3'
+  s.version          = '1.2.4'
   s.summary          = 'IMLib SDK'
   s.description  = <<-DESC
                        IMLib SDK for iOS.
@@ -14,10 +14,11 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/CoderZmu/ACIMLib.git', :tag => s.version.to_s }
 
   s.requires_arc = true
-  s.module_name = 'ACIMLib'
   s.platform     = :ios, "11.0"
 
   s.vendored_frameworks = 'ACIMLib.xcframework'
+  s.source_files='ACIMLib.xcframework/ios-arm64/ACIMLib.framework/Headers/**.h'
+  s.public_header_files = 'ACIMLib.xcframework/ios-arm64/ACIMLib.framework/Headers/**.h'
   s.dependency 'AliyunOSSiOS'
   s.dependency 'libwebp'
 
