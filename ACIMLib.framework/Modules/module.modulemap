@@ -1,6 +1,0 @@
-framework module ACIMLib {
-  umbrella header "ACIMLib.h"
-  export *
-
-  module * { export * }
-}
