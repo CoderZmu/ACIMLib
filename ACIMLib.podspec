@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ACIMLib'
-  s.version          = '1.2.4'
+  s.version          = '1.2.5'
   s.summary          = 'IMLib SDK'
   s.description  = <<-DESC
                        IMLib SDK for iOS.
@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.platform     = :ios, "11.0"
 
-  s.vendored_frameworks = 'ACIMLib.xcframework'
-  s.source_files='ACIMLib.xcframework/ios-arm64/ACIMLib.framework/Headers/**.h'
-  s.public_header_files = 'ACIMLib.xcframework/ios-arm64/ACIMLib.framework/Headers/**.h'
+  s.vendored_frameworks = 'ACIMLib.framework'
+  s.source_files='ACIMLib.framework/Headers/**.h'
+  s.public_header_files = 'ACIMLib.framework/Headers/**.h'
   s.dependency 'AliyunOSSiOS'
   s.dependency 'libwebp'
 
