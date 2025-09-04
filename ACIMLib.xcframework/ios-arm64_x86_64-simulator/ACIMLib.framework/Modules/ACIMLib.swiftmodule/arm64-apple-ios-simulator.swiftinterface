@@ -1,0 +1,1235 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.1 effective-5.10 (swiftlang-6.1.0.110.21 clang-1700.0.13.3)
+// swift-module-flags: -target arm64-apple-ios13-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name ACIMLib
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1
+@_exported import ACIMLib
+import AVFoundation
+import AliyunOSSiOS
+import Combine
+import CommonCrypto
+import CryptoKit
+import Darwin
+import Foundation
+import GRDB
+import ObjectiveC
+import Photos
+import PrivateObjc
+import Swift
+import SwiftProtobuf
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc public enum ACConversationType : Swift.Int, Swift.Codable {
+  case chat = 0
+  case groupChat
+  case chatRoom
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers open class ACConversation : ObjectiveC.NSObject {
+  public enum ACMessageSearchDirection : Swift.Int {
+    case up
+    case down
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc public var conversationId: Swift.Int {
+    @objc get
+  }
+  @objc public var type: ACIMLib.ACConversationType {
+    @objc get
+  }
+  @objc public var unreadMessagesCount: Swift.Int {
+    @objc get
+  }
+  @objc public var updateTime: Swift.Int {
+    @objc get
+  }
+  @objc public var isPinned: Swift.Bool {
+    @objc get
+  }
+  @objc public var latestMessage: ACIMLib.ACChatMessage? {
+    @objc get
+  }
+  @objc public var disturbType: ACIMLib.ACPushRemindType {
+    @objc get
+  }
+  @objc public var title: Swift.String {
+    @objc get
+  }
+  @objc public var smallAvatarUrl: Swift.String? {
+    @objc get
+  }
+  @objc public var takeScreenFlag: Swift.Bool {
+    @objc get
+  }
+  @objc public var burnAfterReadingFlag: Swift.Bool {
+    @objc get
+  }
+  @objc public var burnInterval: Swift.Int {
+    @objc get
+  }
+  @objc public var atFlag: Swift.Bool {
+    @objc get
+  }
+  @objc public var hasMsgFromFollowedMember: Swift.Bool {
+    @objc get
+  }
+  @objc public var draftText: Swift.String? {
+    @objc get
+  }
+  @objc public var draftExt: Swift.String? {
+    @objc get
+  }
+  @objc public var messageLifetime: Swift.Int {
+    @objc get
+  }
+  @objc public init(conversationId: Swift.Int)
+  @objc public func insertMessage(_ message: ACIMLib.ACChatMessage) throws
+  @objc public func deleteMessages(withIdList messageIdList: [Swift.Int]) async throws
+  @objc public func deleteBurnAfterReadingMessages() async
+  @objc public func deleteExpiredMessages() async
+  @objc public func removeAllMessagesFromServer() async throws
+  @objc public func markAllMessagesAsRead()
+  @objc public func getFirstUnreadMessage() -> ACIMLib.ACChatMessage?
+  @objc public func loadMessage(withId messageId: Swift.Int) -> ACIMLib.ACChatMessage?
+  public func loadMessages(startFromId messageId: Swift.Int, count: Swift.Int, searchDirection: ACIMLib.ACConversation.ACMessageSearchDirection) -> [ACIMLib.ACChatMessage]
+  public func loadMessages(withKeyword keywords: Swift.String?, timestamp: Swift.Int, count: Swift.Int, fromUser sender: Swift.Int?, searchDirection: ACIMLib.ACConversation.ACMessageSearchDirection) -> [ACIMLib.ACChatMessage]
+  @objc deinit
+}
+@objc @objcMembers public class ACContactInfo : ObjectiveC.NSObject {
+  @objc final public let title: Swift.String
+  @objc final public let avatarUrl: Swift.String?
+  @objc public init(title: Swift.String, avatarUrl: Swift.String?)
+  @objc deinit
+}
+@objc @objcMembers public class ACGroupMemberInfo : ObjectiveC.NSObject {
+  @objc final public let name: Swift.String
+  @objc final public let avatarUrl: Swift.String?
+  @objc public init(name: Swift.String, avatarUrl: Swift.String?)
+  @objc deinit
+}
+public typealias ACCursorResult<T> = Any
+@objc public enum ACMessageFetchHistoryDirection : Swift.UInt {
+  case up = 0
+  case down
+  public init?(rawValue: Swift.UInt)
+  public typealias RawValue = Swift.UInt
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+@objc public protocol IACChatManager : ObjectiveC.NSObjectProtocol {
+  @objc func addDelegate(_ aDelegate: any ACIMLib.ACChatManagerDelegate, delegateQueue: Dispatch.DispatchQueue?)
+  @objc func removeDelegate(_ aDelegate: any ACIMLib.ACChatManagerDelegate)
+  @objc func getAllConversations() -> [ACIMLib.ACConversation]
+  @objc func cleanConversationsMemoryCache()
+  @objc func getAllConversations(isSort: Swift.Bool) -> [ACIMLib.ACConversation]
+  @objc func getConversationFromServer(_ conversationId: Swift.Int) async throws -> ACIMLib.ACConversation
+  @objc func pinConversation(_ conversationId: Swift.Int, isPinned: Swift.Bool) async throws
+  @objc func blockConversation(_ conversationId: Swift.Int, blocked: Swift.Bool)
+  @objc func setConversationScreenshotFlag(_ conversationId: Swift.Int, isEnabled: Swift.Bool, isUpdateServerConfig: Swift.Bool) async throws
+  @objc func setConversationBurnAfterReading(_ conversationId: Swift.Int, isEnabled: Swift.Bool, interval: Swift.Int, isUpdateServerConfig: Swift.Bool) async throws
+  @objc func setConversationDraft(_ conversationId: Swift.Int, draftText: Swift.String?, ext: Swift.String?)
+  @objc func setGroupConversationScheduledCleanup(_ conversationId: Swift.Int, isEnabled: Swift.Bool) async throws
+  @objc func syncTotalUnreadCountToServer() async throws
+  @objc func getConversation(withConvId aConversationId: Swift.Int) -> ACIMLib.ACConversation?
+  @objc func getConversation(_ aConversationId: Swift.Int, type: ACIMLib.ACConversationType, createIfNotExist: Swift.Bool) -> ACIMLib.ACConversation?
+  @objc func deleteConversation(_ aConversationId: Swift.Int, isDeleteMessages: Swift.Bool) async throws
+  @objc func deleteConversations(_ aConversations: [ACIMLib.ACConversation], isDeleteMessages: Swift.Bool) async throws
+  @objc func setContactInfoProvider(_ provider: @escaping (ACIMLib.ACConversationType, Swift.Int) -> ACIMLib.ACContactInfo?)
+  @objc func setGroupMemberInfoProvider(_ provider: @escaping (Swift.Int, Swift.Int) -> ACIMLib.ACGroupMemberInfo?)
+  @objc func setOSSConfigProvider(_ provider: @escaping (@escaping ([ACIMLib.ACStsConfig]?) -> Swift.Void) -> Swift.Void)
+  @objc func refreshConversationInfo(withConversationId aConversationId: Swift.Int)
+  @objc func recordConversationTakeScreen(withConversationId aConversationId: Swift.Int) async throws
+  @objc func registerMessageType(_ messageClass: Swift.AnyClass)
+  @objc func getMessage(withMessageId aMessageId: Swift.Int) -> ACIMLib.ACChatMessage?
+  @objc func updateMessage(_ aMessage: ACIMLib.ACChatMessage) throws
+  @objc func sendMessageReadAck(_ aMessageIdList: [Swift.Int])
+  @objc func recallMessage(withMessageId aMessageId: Swift.Int) async throws
+  @objc @discardableResult
+  func sendMessage(_ aMessage: ACIMLib.ACChatMessage, progress: ((Swift.Int) -> Swift.Void)?, completion: ((ACIMLib.ACChatMessage?, ACIMLib.ACError?) -> Swift.Void)?) -> ACIMLib.ACChatMessage?
+  @objc @discardableResult
+  func sendQuotedMessage(_ aMessage: ACIMLib.ACChatMessage, quotedMessageId: Swift.Int, completion: ((ACIMLib.ACChatMessage?, ACIMLib.ACError?) -> Swift.Void)?) -> ACIMLib.ACChatMessage?
+  @objc @discardableResult
+  func resendMessage(_ aMessage: ACIMLib.ACChatMessage, progress: ((Swift.Int) -> Swift.Void)?, completion: ((ACIMLib.ACChatMessage?, ACIMLib.ACError?) -> Swift.Void)?) -> ACIMLib.ACChatMessage?
+  @objc @discardableResult
+  func forwardMessage(_ originalMessage: ACIMLib.ACChatMessage, toConversation conversationId: Swift.Int, progress: ((Swift.Int) -> Swift.Void)?, completion: ((ACIMLib.ACChatMessage?, ACIMLib.ACError?) -> Swift.Void)?) -> ACIMLib.ACChatMessage?
+  @objc func downloadAndParseCombineMessage(_ aMessage: ACIMLib.ACChatMessage) async throws -> [ACIMLib.ACChatMessage]
+  @objc func addReaction(_ reaction: Swift.String, toMessage messageId: Swift.Int) async throws
+  @objc func removeReaction(fromMessage messageId: Swift.Int) async throws
+  @objc func clearMessagesOfConversations(_ conversationIds: [Swift.Int], clearServerData: Swift.Bool) async throws
+  @objc func deleteAllMessagesAndConversations(_ clearServerData: Swift.Bool) async throws
+  @objc func getAllConversationCacheInfo() -> [ACIMLib.ACConversationCacheInfo]
+}
+public class FileUploadService : ACIMLib.FileUploadProtocol {
+  public init(ossManager: ACIMLib.OssManager = .shared)
+  public func uploadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, filePath: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)?) async throws
+  public func uploadMultipleFiles(keys: [Swift.String], filePaths: [Swift.String], encryptOptions: ACIMLib.OssEncryptOptions) async throws
+  public func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, type: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws -> Foundation.Data
+  public func copyObject(_ object: ACIMLib.OssCopyObjectMeta) async throws
+  public func doesObjectExist(_ key: Swift.String) async -> Swift.Bool
+  public func isObjectRecentlyUploaded(_ key: Swift.String) -> Swift.Bool
+  public func generateObjectKey(ext: Swift.String?, type: ACIMLib.StorageType) -> Swift.String
+  public func generateObjectKey(fileName: Swift.String, type: ACIMLib.StorageType) -> Swift.String
+  public func generateCopyDestObjectKey(sourceKey: Swift.String, type: ACIMLib.StorageType, ignoreCache: Swift.Bool) -> Swift.String
+  @objc deinit
+}
+@objc public protocol ACClientDelegate : ObjectiveC.NSObjectProtocol {
+  @objc optional func connectionStateDidChange(_ aConnectionState: ACIMLib.ACConnectionState)
+  @objc optional func socketReachabilityDidChange(_ reachable: Swift.Bool)
+  @objc optional func userAccountDidLoginFromOtherDevice(with info: ACIMLib.ACLoginExtensionInfo?)
+  @objc optional func userDidForbidByServer(with type: Swift.Int)
+  @objc optional func userAccountDidForcedToLogout(with aError: ACIMLib.ACError?)
+  @objc optional func tokenWillExpire(with aErrorCode: Swift.Int)
+  @objc optional func tokenDidExpire(with aErrorCode: Swift.Int)
+  @objc optional func onOfflineMessageSyncStart()
+  @objc optional func onOfflineMessageSyncFinish()
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class RecallPrivateChatMessageNotificationMessage : ACIMLib.RecallMessageNotificationBaseMessage {
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class LocationMessage : ACIMLib.MediaMessageContent {
+  @objc public var thumbnailObjectKey: Swift.String
+  @objc public var title: Swift.String
+  @objc public var desc: Swift.String
+  @objc public var locationType: Swift.Int
+  @objc public var encryptKey: Swift.String?
+  @objc public var lat: Swift.Double
+  @objc public var lon: Swift.Double
+  @objc public var oldThumbnailObjectKey: Swift.String?
+  @objc public init(image: UIKit.UIImage)
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getSearchableWords() -> Swift.String?
+  @objc override public func getImageKeys() -> [Swift.String]
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers public class ACError : ObjectiveC.NSObject, Swift.Error {
+  public var code: ACIMLib.ACErrorCode
+  public var errorDescription: Swift.String?
+  public init(description aDescription: Swift.String?, code aCode: ACIMLib.ACErrorCode)
+  public static func error(withDescription aDescription: Swift.String?, code aCode: ACIMLib.ACErrorCode) -> ACIMLib.ACError
+  @objc deinit
+}
+@objc public enum ACErrorCode : Swift.Int {
+  case noError = 0
+  case general = 1
+  case networkUnavailable
+  case databaseOperationFailed
+  case exceedServiceLimit
+  case pushReportActionFailed
+  case partialSuccess
+  case invalidAppkey = 100
+  case invalidUsername
+  case invalidPassword
+  case invalidURL
+  case invalidToken
+  case usernameTooLong
+  case channelSyncNotOpen
+  case invalidConversation
+  case tokenExpire
+  case tokeWillExpire
+  case invalidParam = 110
+  case operationUnsupported
+  case queryParamReachesLimit
+  case userAlreadyLoginSame = 200
+  case userNotLogin
+  case userAuthenticationFailed
+  case userAlreadyExist
+  case userNotFound
+  case userIllegalArgument
+  case userLoginOnAnotherDevice
+  case userRemoved
+  case userRegisterFailed
+  case updateApnsConfigsFailed
+  case userPermissionDenied
+  case userBindDeviceTokenFailed
+  case userUnbindDeviceTokenFailed
+  case userBindAnotherDevice
+  case userLoginTooManyDevices
+  case userMuted
+  case userKickedByChangePassword
+  case userKickedByOtherDevice
+  case userAlreadyLoginAnother
+  case userMutedByAdmin
+  case userDeviceChanged
+  case userNotOnRoster
+  case serverNotReachable = 300
+  case serverTimeout
+  case serverBusy
+  case serverUnknownError
+  case serverGetDNSConfigFailed
+  case serverServingForbidden
+  case serverDecryptionFailed
+  case serverGetRTCConfigFailed
+  case serverNoMatchURL
+  case fileNotFound = 400
+  case fileInvalid
+  case fileUploadFailed
+  case fileDownloadFailed
+  case fileDeleteFailed
+  case fileTooLarge
+  case fileContentImproper
+  case fileExpired
+  case messageInvalid = 500
+  case messageIncludeIllegalContent
+  case messageTrafficLimit
+  case messageEncryption
+  case messageRecallTimeLimit
+  case messageExpired
+  case messageIllegalWhiteList
+  case messageExternalLogicBlocked
+  case messageCurrentLimiting
+  case messageSizeLimit
+  case groupInvalidId = 600
+  case groupAlreadyJoined
+  case groupNotJoined
+  case groupPermissionDenied
+  case groupMembersFull
+  case groupSharedFileInvalidId
+  case groupNotExist
+  case groupDisabled
+  case groupUserInBlockList
+  case reactionReachLimit = 1300
+  case reactionHasBeenOperated = 1301
+  case reactionOperationIsIllegal = 1302
+  case notSupportPush = 1500
+  case pushBindFailed = 1501
+  case pushUnBindFailed = 1502
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class ScreenShotSwitchChangeNotificationBaseMessage : ACIMLib.NotificationMessage {
+  @objc public var templateId: Swift.Int
+  @objc public var params: [Swift.String]
+  @objc public var operatorUserId: Swift.Int
+  @objc public var groupUin: Swift.Int
+  @objc public var destUin: Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class TurnOffGroupMessageLifetimeNotificationMessage : ACIMLib.NotificationMessage {
+  @objc public var templateId: Swift.Int
+  @objc public var params: [Swift.String]
+  @objc public var operatorUserId: Swift.Int
+  @objc public var destUin: Swift.Int
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class ImageMessage : ACIMLib.MediaMessageContent {
+  @objc public var full: Swift.Bool
+  @objc public var `extension`: Swift.String
+  @objc public var originalObjectKey: Swift.String
+  @objc public var thumbnailObjectKey: Swift.String
+  @objc public var width: Swift.Int
+  @objc public var height: Swift.Int
+  @objc public var encryptKey: Swift.String?
+  @objc required dynamic public init()
+  @objc public init(originalImageData: Foundation.Data? = nil, image: UIKit.UIImage)
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getImageKeys() -> [Swift.String]
+  @objc deinit
+}
+public struct OssCopyObjectMeta {
+  public let sourceKey: Swift.String
+  public let destKey: Swift.String
+  public init(sourceKey: Swift.String, destKey: Swift.String)
+  public static func instance(sourceKey: Swift.String, destKey: Swift.String) -> ACIMLib.OssCopyObjectMeta
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class OssManager : ObjectiveC.NSObject {
+  @objc public static let shared: ACIMLib.OssManager
+  final public func uploadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions = .none, filePath: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws
+  @objc final public func uploadMultipleAvatars(keys: [Swift.String], filePaths: [Swift.String]) async throws
+  final public func uploadMultipleFiles(keys: [Swift.String], filePaths: [Swift.String], encryptOptions: ACIMLib.OssEncryptOptions = .none, overallProgress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws
+  final public func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions = .none, type: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws -> Foundation.Data
+  final public func copyObject(_ object: ACIMLib.OssCopyObjectMeta) async throws
+  final public func isObjectRecentlyUploaded(_ key: Swift.String) -> Swift.Bool
+  final public func doesObjectExist(_ key: Swift.String) async -> Swift.Bool
+  final public func chat_generateObjectKey(ext: Swift.String? = nil) -> Swift.String
+  final public func chat_generateObjectKey(fileName: Swift.String) -> Swift.String
+  final public func chat_generateCopyDestObjectKey(sourceKey: Swift.String, ignoreCache: Swift.Bool = false) -> Swift.String
+  final public func chat_downloadFile(key: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws -> Foundation.Data
+  @objc final public func base_generateObjectKey(ext: Swift.String? = nil) -> Swift.String
+  final public func base_downloadFile(key: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws -> Foundation.Data
+  @objc deinit
+}
+@objc public protocol MessageBriefTextProvider : ObjectiveC.NSObjectProtocol {
+  @objc func briefText(for content: ACIMLib.MessageContent) -> Swift.String?
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class MessageBriefTextFactory : ObjectiveC.NSObject {
+  @objc public static let shared: ACIMLib.MessageBriefTextFactory
+  @objc public func register(provider: any ACIMLib.MessageBriefTextProvider, for messageType: Swift.Int)
+  @objc public func unregisterProvider(for messageType: Swift.Int)
+  @objc public func briefText(for content: ACIMLib.MessageContent) -> Swift.String?
+  @objc public func clearAllProviders()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class ACClient : ObjectiveC.NSObject {
+  public var version: Swift.String {
+    get
+  }
+  public var currentUsername: Swift.Int {
+    get
+  }
+  public var options: ACIMLib.ACOptions? {
+    get
+  }
+  @objc public var chatManager: any ACIMLib.IACChatManager {
+    get
+  }
+  @objc final public let pushManager: any ACIMLib.IACPushManager
+  public var isLoggedIn: Swift.Bool {
+    get
+  }
+  public var isConnected: Swift.Bool {
+    get
+  }
+  @objc public static func sharedClient() -> ACIMLib.ACClient
+  public func addDelegate(_ delegate: any ACIMLib.ACClientDelegate, delegateQueue queue: Dispatch.DispatchQueue?)
+  public func removeDelegate(_ delegate: any ACIMLib.ACClientDelegate)
+  @discardableResult
+  public func initializeSDK(with options: ACIMLib.ACOptions) -> ACIMLib.ACError?
+  public func setServerInfo(_ imServer: Swift.String)
+  public func login(withUsername username: Swift.Int, token: Swift.String, completion: @escaping (Swift.String, ACIMLib.ACError?) -> Swift.Void)
+  public func renewToken(_ newToken: Swift.String) -> ACIMLib.ACError?
+  public func logout(_ isUnbindDeviceToken: Swift.Bool, completion: @escaping (ACIMLib.ACError?) -> Swift.Void)
+  public func bindPushTokens(deviceToken: Swift.String, pushToken: Swift.String?) async throws
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class ACSilentModeResult : ObjectiveC.NSObject {
+  @objc public var remindType: ACIMLib.ACPushRemindType {
+    get
+  }
+  @objc public var conversationID: Swift.Int {
+    get
+  }
+  @objc public var conversationType: ACIMLib.ACConversationType {
+    get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class FileMessage : ACIMLib.MediaMessageContent {
+  @objc public var fileKey: Swift.String
+  @objc public var title: Swift.String
+  @objc public var `extension`: Swift.String?
+  @objc public var size: Swift.Int
+  @objc public var encryptKey: Swift.String
+  @objc public var oldFileKey: Swift.String?
+  @objc public init(fileUrl: Foundation.URL)
+  @objc public func getFileName() -> Swift.String
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getSearchableWords() -> Swift.String?
+  @objc public func getEncryptKey() -> Swift.String?
+  @objc override public func getFileKeys() -> [Swift.String]
+  @objc deinit
+}
+@objc public enum ReceivedStatus : Swift.Int {
+  case unreceived
+  case noneLeft
+  case received
+  case expired
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class RedPacketMessage : ACIMLib.MessageContent {
+  @objc public var id: Swift.Int
+  @objc public var createTime: Swift.String
+  @objc public var updateTime: Swift.String
+  @objc public var amount: Swift.String
+  @objc public var count: Swift.Int
+  @objc public var uid: Swift.Int
+  @objc public var nativeNumber: Swift.Int
+  @objc public var nativeType: Swift.Int
+  @objc public var sendSign: Swift.String
+  @objc public var title: Swift.String
+  @objc public var symbol: Swift.String
+  @objc public var receivedStatus: ACIMLib.ReceivedStatus
+  @objc public var status: Swift.Int
+  @objc public var expireTime: Swift.Int
+  @objc public var currency: Swift.String
+  @objc public var currencyLogo: Swift.String
+  @objc public var refundAmount: Swift.String
+  @objc public var receivedAmout: Swift.String?
+  @objc required dynamic public init()
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class RecallGroupChatMessageNotificationMessage : ACIMLib.RecallMessageNotificationBaseMessage {
+  @objc public var groupId: Swift.Int
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc public protocol ACGroupMessageAck {
+}
+@objc public protocol ACChatManagerDelegate : ObjectiveC.NSObjectProtocol {
+  @objc optional func conversationListDidUpdate(_ aConversationList: [ACIMLib.ACConversation])
+  @objc optional func conversationDidUpdate(_ aConversationId: Swift.Int)
+  @objc optional func totalUnreadCountDidChange()
+  @objc optional func messagesDidReceive(_ aMessages: [ACIMLib.ACChatMessage])
+  @objc optional func messagesDidRead(_ aMessages: [ACIMLib.ACChatMessage])
+  @objc optional func messagesDidDeliver(_ aMessages: [ACIMLib.ACChatMessage])
+  @objc optional func messagesInfoDidRecall(_ aRecallMessages: [ACIMLib.ACChatMessage])
+  @objc optional func messageStatusDidChange(_ aMessage: ACIMLib.ACChatMessage, error: ACIMLib.ACError?)
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class MessageTypes : ObjectiveC.NSObject {
+  @objc public static let text: Swift.Int
+  @objc public static let image: Swift.Int
+  @objc public static let video: Swift.Int
+  @objc public static let gif: Swift.Int
+  @objc public static let audio: Swift.Int
+  @objc public static let location: Swift.Int
+  @objc public static let file: Swift.Int
+  @objc public static let redPacket: Swift.Int
+  @objc public static let transfer: Swift.Int
+  @objc public static let combine: Swift.Int
+  @objc public static let link: Swift.Int
+  @objc public static let contact: Swift.Int
+  @objc public static let groupInvitation: Swift.Int
+  @objc public static let walletService: Swift.Int
+  @objc public static let privateRecallNoti: Swift.Int
+  @objc public static let addFriendNoti: Swift.Int
+  @objc public static let addFriendV2Noti: Swift.Int
+  @objc public static let groupRecallNoti: Swift.Int
+  @objc public static let userApplyAddGroupNoti: Swift.Int
+  @objc public static let turnOnPrivatechatBurnAfterReadingNoti: Swift.Int
+  @objc public static let turnOffPrivateChatBurnAfterReadingNoti: Swift.Int
+  @objc public static let updateGroupChatTitleNoti: Swift.Int
+  @objc public static let addGroupMemberNoti: Swift.Int
+  @objc public static let removeGroupMemberNoti: Swift.Int
+  @objc public static let addGroupAdminNoti: Swift.Int
+  @objc public static let deleteGroupAdminNoti: Swift.Int
+  @objc public static let kickedOutGroupNoti: Swift.Int
+  @objc public static let turnOnPrivateChatTakeScreenshotNoti: Swift.Int
+  @objc public static let turnOnGroupMessageLifetimeNoti: Swift.Int
+  @objc public static let turnOffGroupMessageLifetimeNoti: Swift.Int
+  @objc public static let updateGroupChatPhotoNotification: Swift.Int
+  @objc public static let redPacketlNoti: Swift.Int
+  @objc public static let updateGroupNoticeNoti: Swift.Int
+  @objc public static let turnOnPrivateScreenShotNoti: Swift.Int
+  @objc public static let turnOffPrivateScreenShotNoti: Swift.Int
+  @objc public static let turnOnGroupScreenShotNoti: Swift.Int
+  @objc public static let turnOffGroupScreenShotNoti: Swift.Int
+  @objc public static let privateChatScreenShotNoti: Swift.Int
+  @objc public static let groupChatScreenShotNoti: Swift.Int
+  @objc public static let groupMemberMuteNoti: Swift.Int
+  @objc public static let activitySharing: Swift.Int
+  @objc public static let openPrivateChatBurnAfterReadingNoti: Swift.Int
+  @objc public static let closePrivateChatBurnAfterReadingNoti: Swift.Int
+  @objc public static let openGroupChatBurnAfterReadingNoti: Swift.Int
+  @objc public static let closeGroupChatBurnAfterReadingNoti: Swift.Int
+  @objc public static let voicePushClosedNoti: Swift.Int
+  @objc public static let systemTemplateTwo: Swift.Int
+  @objc public static let systemTemplateThree: Swift.Int
+  @objc public static let welcomeNoti: Swift.Int
+  @objc public static let deviceChangedNoti: Swift.Int
+  @objc public static let audioNoti: Swift.Int
+  @objc public static let dateNoti: Swift.Int
+  @objc public static let unreadNoti: Swift.Int
+  @objc public static let newFriendNoti: Swift.Int
+  @objc public static let encryptionNoti: Swift.Int
+  @objc public static let chatRejected: Swift.Int
+  @objc public static let unidentified: Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class LinkMessage : ACIMLib.MessageContent {
+  @objc public var url: Swift.String
+  @objc public var title: Swift.String?
+  @objc public var content: Swift.String?
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class BurnAfterReadingNotificationMessage : ACIMLib.NotificationMessage {
+  @objc public var templateId: Swift.Int
+  @objc public var burnAfterReadingTime: Swift.Int
+  @objc public var params: [Swift.String]
+  @objc public var operatorUserId: Swift.Int
+  @objc public var groupUin: Swift.Int
+  @objc public var destUin: Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @objcMembers public class ACStsConfig : ObjectiveC.NSObject {
+  @objc public var accessKeyID: Swift.String
+  @objc public var accessKeySecret: Swift.String
+  @objc public var securityToken: Swift.String
+  @objc public var endpoint: Swift.String
+  @objc public var baseFile: Swift.String
+  @objc public var chatFile: Swift.String
+  @objc public var main: Swift.Bool
+  @objc public var ossSource: Swift.String
+  @objc public var avatarEncrypt: Swift.Bool
+  @objc public var expiration: Swift.Int
+  @objc public var expireTime: Swift.String
+  @objc public init(accessKeyID: Swift.String, accessKeySecret: Swift.String, securityToken: Swift.String, endpoint: Swift.String, baseFile: Swift.String, chatFile: Swift.String, main: Swift.Bool, ossSource: Swift.String, avatarEncrypt: Swift.Bool, expiration: Swift.Int, expireTime: Swift.String)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class MediaMessageContent : ACIMLib.MessageContent {
+  @objc public func getImageKeys() -> [Swift.String]
+  @objc public func getFileKeys() -> [Swift.String]
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @objcMembers public class ACConversationCacheInfo : ObjectiveC.NSObject {
+  @objc public var size: Swift.UInt
+  @objc public var conversationId: Swift.Int
+  @objc deinit
+}
+extension AVFoundation.AVAssetExportSession {
+  @available(iOSApplicationExtension, obsoleted: 18.0, message: "Use export(to:as:) instead")
+  @inlinable internal func exportAsync(to url: Foundation.URL, as fileType: AVFoundation.AVFileType, isolation: isolated (any _Concurrency.Actor)? = #isolation) async throws {
+        if #available(iOS 18, *) {
+            try await export(to: url, as: fileType)
+        } else {
+            outputURL = url
+            outputFileType = fileType
+            return try await withCheckedThrowingContinuation { continuation in
+                nonisolated(unsafe) let session = self
+                exportAsynchronously {
+                    if session.status == .cancelled {
+                        continuation.resume(throwing: CancellationError())
+                    } else {
+                        continuation.resume()
+                    }
+                }
+            }
+        }
+    }
+}
+@objc public enum MessagePersistent : Swift.Int, Swift.Codable {
+  case none = 0
+  case isPersisted = 1
+  case isCounted = 3
+  case status = 16
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public protocol MessageCoding : ObjectiveC.NSObjectProtocol, Swift.Decodable, Swift.Encodable {
+  func getContentBriefText() -> Swift.String?
+  func getSearchableWords() -> Swift.String?
+  static func getConstructor() -> Swift.Int
+  static func mediaFlag() -> Swift.Bool
+}
+@objc public protocol MessagePersistentCompatible : ObjectiveC.NSObjectProtocol {
+  @objc static func persistentFlag() -> ACIMLib.MessagePersistent
+}
+public protocol MessageNotificationProcessing : ObjectiveC.NSObjectProtocol {
+  func processForMessage(message: ACIMLib.ACChatMessage)
+}
+public protocol MessageFilteringDelegate {
+  func shouldBeIgnored(message: ACIMLib.ACChatMessage) -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers @objcMembers open class MessageContent : ObjectiveC.NSObject, ACIMLib.MessageCoding, ACIMLib.MessagePersistentCompatible {
+  @objc required override dynamic public init()
+  @objc open func getContentBriefText() -> Swift.String?
+  @objc open func getSearchableWords() -> Swift.String?
+  @objc open class func getConstructor() -> Swift.Int
+  @objc open class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc open class func mediaFlag() -> Swift.Bool
+  @objc deinit
+  open func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers final public class CombineMessageItemSummary : ObjectiveC.NSObject, Swift.Codable {
+  @objc final public var from: Swift.Int
+  @objc final public var senderNickname: Swift.String
+  @objc final public var messageType: Swift.Int
+  @objc final public var briefText: Swift.String
+  @objc deinit
+  final public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class CombineMessage : ACIMLib.MediaMessageContent {
+  @objc public var chatTitle: Swift.String
+  @objc public var msgDataFileKey: Swift.String
+  @objc public var msgList: [ACIMLib.CombineMessageItemSummary]
+  @objc public var encryptKey: Swift.String?
+  @objc public var oldMsgDataFileKey: Swift.String?
+  @objc public init(chatTitle: Swift.String = "", messageIdList: [Swift.Int])
+  @objc required dynamic public init()
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc public func getEncryptKey() -> Swift.String?
+  @objc override public func getFileKeys() -> [Swift.String]
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class TransferMessage : ACIMLib.MessageContent {
+  @objc public var id: Swift.Int
+  @objc public var createTime: Swift.String
+  @objc public var updateTime: Swift.String
+  @objc public var uid: Swift.String
+  @objc public var orderId: Swift.String
+  @objc public var src: Swift.String
+  @objc public var symbol: Swift.String
+  @objc public var type: Swift.Int
+  @objc public var toUid: Swift.String
+  @objc public var toName: Swift.String
+  @objc public var nativeType: Swift.Int
+  @objc public var money: Swift.String
+  @objc public var moneyStr: Swift.String
+  @objc public var refName: Swift.String
+  @objc public var transNo: Swift.String
+  @objc public var status: Swift.Int
+  @objc public var pushStatus: Swift.Int
+  @objc public var currency: Swift.String
+  @objc public var currencyLogo: Swift.String
+  @objc public var network: Swift.String
+  @objc public var networkLogo: Swift.String
+  @objc public var refId: Swift.String
+  @objc public var currencyType: Swift.Int
+  @objc public var remarkStr: Swift.String
+  @objc public func getMoneyText() -> Swift.String
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class ACOptions : ObjectiveC.NSObject {
+  public var appkey: Swift.String {
+    get
+  }
+  @objc public class func options(withAppkey appkey: Swift.String) -> ACIMLib.ACOptions
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class ChatConfig : ObjectiveC.NSObject {
+  @objc public static let maxGroupMemberCount: Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class ACFileManager : ObjectiveC.NSObject {
+  @objc public static var msgImageDir: Swift.String {
+    @objc get
+  }
+  @objc public static var msgFileDir: Swift.String {
+    @objc get
+  }
+  @objc public static func msgMediaFileName(forTarget target: Swift.Int, key: Swift.String) -> Swift.String
+  @objc public static func getMsgFilePath(forTarget target: Swift.Int, key: Swift.String) -> Swift.String
+  @objc public static func getMsgImagePath(forTarget target: Swift.Int, key: Swift.String) -> Swift.String
+  @objc public static func getTmpMedia(forKey key: Swift.String) -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class ACLoginExtensionInfo : ObjectiveC.NSObject {
+  @objc public var deviceName: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class AliYunOss : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ACIMLib.AliYunOss : ACIMLib.OssBehavior {
+  public func configure(with model: ACIMLib.OssModel)
+  public func uploadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, fileURL: Foundation.URL, storageType: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws
+  public func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, storageType: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws -> Foundation.Data
+  public func copyObject(_ object: ACIMLib.OssCopyObjectMeta, storageType: ACIMLib.StorageType) async throws
+  public func doesObjectExist(key: Swift.String, storageType: ACIMLib.StorageType) async -> Swift.Bool
+}
+@_inheritsConvenienceInitializers @objc public class ServerTime : ObjectiveC.NSObject {
+  @objc public static func getServerMSTime() -> Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers final public class UnidentifiedMessage : ACIMLib.MessageContent {
+  @objc override final public class func getConstructor() -> Swift.Int
+  @objc override final public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override final public class func mediaFlag() -> Swift.Bool
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class ContactMessage : ACIMLib.MessageContent {
+  @objc public var uid: Swift.Int
+  @objc public var nickname: Swift.String
+  @objc public var phoneNumber: Swift.String?
+  @objc public var langcode: Swift.String?
+  @objc public var smallAvatarUrl: Swift.String?
+  @objc public var gender: Swift.Int
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc public enum ACChatType : Swift.Int {
+  case chat = 0
+  case groupChat
+  case chatRoom
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum ACMessageStatus : Swift.Int {
+  case pending = 0
+  case delivering
+  case succeed
+  case failed
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum ACMessageDirection : Swift.Int {
+  case send = 0
+  case receive
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class ACChatMessage : ObjectiveC.NSObject {
+  @objc convenience public init(conversationId: Swift.Int, body: ACIMLib.MessageContent)
+  @objc convenience public init(conversationId: Swift.Int, from: Swift.Int, to: Swift.Int, body: ACIMLib.MessageContent)
+  @objc public var messageId: Swift.Int {
+    @objc get
+  }
+  @objc public var conversationId: Swift.Int {
+    @objc get
+  }
+  @objc public var type: Swift.Int {
+    @objc get
+  }
+  @objc public var direction: ACIMLib.ACMessageDirection {
+    @objc get
+    @objc set
+  }
+  @objc public var from: Swift.Int {
+    @objc get
+  }
+  @objc public var to: Swift.Int {
+    @objc get
+  }
+  @objc public var timestamp: Swift.Int {
+    @objc get
+    @objc set
+  }
+  @objc public var localTime: Swift.Int {
+    @objc get
+    @objc set
+  }
+  @objc public var chatType: ACIMLib.ACChatType {
+    @objc get
+    @objc set
+  }
+  @objc public var status: ACIMLib.ACMessageStatus {
+    @objc get
+    @objc set
+  }
+  @objc public var onlineState: Swift.Bool {
+    @objc get
+  }
+  @objc public var isReadAcked: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public var isDeliverAcked: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public var isListened: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc public var body: ACIMLib.MessageContent {
+    @objc get
+  }
+  @objc public var bodyRawJsonString: Swift.String? {
+    @objc get
+  }
+  @objc public var isNotificationMessage: Swift.Bool {
+    @objc get
+  }
+  @objc public var reactionList: [ACIMLib.ACMessageReaction]?
+  @objc public var ext: [Swift.String : Any]?
+  @objc public var isQuotedReplyMessage: Swift.Bool {
+    @objc get
+  }
+  @objc public var quoteMessage: ACIMLib.ACChatMessage? {
+    get
+  }
+  @objc public var burnAfterReadingFlag: Swift.Bool {
+    @objc get
+  }
+  @objc public func updateBody(_ body: ACIMLib.MessageContent)
+  @objc public static func createTempMessage(msgContent: ACIMLib.MessageContent) -> ACIMLib.ACChatMessage
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class RecallMessageNotificationBaseMessage : ACIMLib.NotificationMessage {
+  @objc public var templateId: Swift.Int
+  @objc public var params: [Swift.String]
+  @objc public var msgId: Swift.Int
+  @objc public var originalMediaConstructor: Swift.Int
+  @objc public var recallContent: Swift.String?
+  @objc public var operatorUserId: Swift.Int
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class AudioMessage : ACIMLib.MediaMessageContent {
+  @objc public var audioObjectKey: Swift.String
+  @objc public var `extension`: Swift.String
+  @objc public var encryptKey: Swift.String?
+  @objc public var length: Swift.Int
+  @objc public init(localPath: Swift.String)
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getFileKeys() -> [Swift.String]
+  @objc deinit
+}
+public protocol FileUploadProtocol {
+  func uploadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, filePath: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)?) async throws
+  func uploadMultipleFiles(keys: [Swift.String], filePaths: [Swift.String], encryptOptions: ACIMLib.OssEncryptOptions) async throws
+  func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, type: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws -> Foundation.Data
+  func copyObject(_ object: ACIMLib.OssCopyObjectMeta) async throws
+  func doesObjectExist(_ key: Swift.String) async -> Swift.Bool
+  func isObjectRecentlyUploaded(_ key: Swift.String) -> Swift.Bool
+  func generateObjectKey(ext: Swift.String?, type: ACIMLib.StorageType) -> Swift.String
+  func generateObjectKey(fileName: Swift.String, type: ACIMLib.StorageType) -> Swift.String
+  func generateCopyDestObjectKey(sourceKey: Swift.String, type: ACIMLib.StorageType, ignoreCache: Swift.Bool) -> Swift.String
+}
+extension ACIMLib.FileUploadProtocol {
+  public func uploadFile(key: Swift.String, filePath: Swift.String, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws
+  public func uploadMultipleFiles(keys: [Swift.String], filePaths: [Swift.String]) async throws
+  public func downloadFile(key: Swift.String, type: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)? = nil) async throws -> Foundation.Data
+  public func generateObjectKey(ext: Swift.String? = nil, type: ACIMLib.StorageType) -> Swift.String
+  public func generateCopyDestObjectKey(sourceKey: Swift.String, type: ACIMLib.StorageType, ignoreCache: Swift.Bool = false) -> Swift.String
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class GIFMessage : ACIMLib.MediaMessageContent {
+  @objc public var originalObjectKey: Swift.String
+  @objc public var `extension`: Swift.String
+  @objc public var width: Swift.Int
+  @objc public var height: Swift.Int
+  @objc public var encryptKey: Swift.String?
+  @objc public var oldOriginalObjectKey: Swift.String?
+  @objc public init(data: Foundation.Data)
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getImageKeys() -> [Swift.String]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class FileDownloadCache : ObjectiveC.NSObject {
+  @objc public static let shared: ACIMLib.FileDownloadCache
+  public func setResponseData(_ responseData: Foundation.Data, forKey key: Swift.String)
+  public func responseData(forKey key: Swift.String) -> Foundation.Data?
+  public func setFileNotExists(forKey key: Swift.String)
+  @objc public func isFileNoExists(forKey key: Swift.String) -> Swift.Bool
+  @objc deinit
+}
+@objc public protocol IACPushManager : ObjectiveC.NSObjectProtocol {
+  @objc func setSilentModeForConversation(_ aConversationId: Swift.Int, conversationType: ACIMLib.ACConversationType, remindType: ACIMLib.ACPushRemindType) async throws -> ACIMLib.ACSilentModeResult
+}
+@objc public class OssConfig : ObjectiveC.NSObject, Swift.Codable {
+  final public let modelArray: [ACIMLib.OssModel]
+  final public let currentSource: Swift.String
+  public init(modelArray: [ACIMLib.OssModel], currentSource: Swift.String)
+  public static func createDefaultOssConfig(source: Swift.String) -> ACIMLib.OssConfig
+  @objc deinit
+  public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_hasMissingDesignatedInitializers public class OssModel : ObjectiveC.NSObject, Swift.Codable {
+  final public let accessKey: Swift.String
+  final public let secretKey: Swift.String
+  final public let securityToken: Swift.String
+  final public let endPoint: Swift.String
+  final public let baseBucket: Swift.String
+  final public let chatBucket: Swift.String
+  final public let avatarNeedEncrypt: Swift.Bool
+  final public let source: Swift.String
+  final public let expiration: Swift.Int
+  public static func == (lhs: ACIMLib.OssModel, rhs: ACIMLib.OssModel) -> Swift.Bool
+  @objc deinit
+  public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+}
+extension Foundation.Data {
+  @inlinable internal func withUnsafeUInt8Pointer<ResultType>(_ body: (Swift.UnsafePointer<Swift.UInt8>?) throws -> ResultType) rethrows -> ResultType {
+        return try withUnsafeBytes({ (buffer) -> ResultType in
+            let ptr = buffer.bindMemory(to: UInt8.self).baseAddress
+            return try body(ptr)
+        })
+    }
+  @inlinable internal mutating func withUnsafeMutableUInt8Pointer<ResultType>(_ body: (Swift.UnsafeMutablePointer<Swift.UInt8>?) throws -> ResultType) rethrows -> ResultType {
+        return try withUnsafeMutableBytes({ (buffer) -> ResultType in
+            let ptr = buffer.bindMemory(to: UInt8.self).baseAddress
+            return try body(ptr)
+        })
+    }
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class TurnOnGroupMessageLifetimeNotificationMessage : ACIMLib.NotificationMessage {
+  @objc public var templateId: Swift.Int
+  @objc public var params: [Swift.String]
+  @objc public var operatorUserId: Swift.Int
+  @objc public var destUin: Swift.Int
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc public enum ACPushRemindType : Swift.Int {
+  case all = 0
+  case none = 2
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objcMembers public class VideoMessage : ACIMLib.MediaMessageContent {
+  @objc public var during: Swift.String
+  @objc public var videoObjectKey: Swift.String
+  @objc public var thumbnailObjectKey: Swift.String
+  @objc public var `extension`: Swift.String
+  @objc public var encryptKey: Swift.String?
+  @objc public var width: Swift.Int
+  @objc public var height: Swift.Int
+  @objc public var uncompressed: Swift.Bool
+  @objc public var oldVideoObjectKey: Swift.String?
+  @objc public var oldThumbnailObjectKey: Swift.String?
+  public init(localPath: Swift.String, coverImage: UIKit.UIImage?, duration: Swift.Double?)
+  @objc override public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override public class func getConstructor() -> Swift.Int
+  @objc override public func getImageKeys() -> [Swift.String]
+  @objc override public func getFileKeys() -> [Swift.String]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class ACMessageReaction : ObjectiveC.NSObject {
+  @objc public var reaction: Swift.String {
+    get
+  }
+  @objc public var count: Swift.UInt {
+    get
+  }
+  @objc public var isAddedBySelf: Swift.Bool {
+    get
+  }
+  @objc public var userList: [Swift.Int] {
+    get
+  }
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers final public class TextMessage : ACIMLib.MediaMessageContent {
+  @objc final public var atInfo: [ACIMLib.AtInfo]
+  @objc final public var attributes: [ACIMLib.ChatTextStyleAttribute]
+  @objc final public var linkPreview: ACIMLib.MessageTextLinkPreviewInfo?
+  @objc final public var text: Swift.String
+  @objc override final public class func getConstructor() -> Swift.Int
+  @objc override final public class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override final public class func mediaFlag() -> Swift.Bool
+  @objc override final public func getContentBriefText() -> Swift.String?
+  @objc override final public func getImageKeys() -> [Swift.String]
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc public enum ChatTextStyleAttributeType : Swift.Int, Swift.Codable {
+  case spoiler
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @objcMembers final public class ChatTextStyleAttribute : ObjectiveC.NSObject, Swift.Codable {
+  @objc final public var type: ACIMLib.ChatTextStyleAttributeType
+  @objc final public var location: Swift.Int
+  @objc final public var length: Swift.Int
+  @objc final public func range() -> Foundation.NSRange
+  @objc public init(type: ACIMLib.ChatTextStyleAttributeType, range: Foundation.NSRange)
+  @objc deinit
+  final public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_inheritsConvenienceInitializers @objcMembers final public class MessageTextLinkPreviewInfo : ObjectiveC.NSObject {
+  @objc final public var url: Swift.String
+  @objc final public var domain: Swift.String?
+  @objc final public var title: Swift.String?
+  @objc final public var previewDescription: Swift.String?
+  @objc final public var width: Swift.Int
+  @objc final public var height: Swift.Int
+  @objc final public var encryptKey: Swift.String?
+  @objc final public var originalObjectKey: Swift.String?
+  @objc final public var oldOriginalObjectKey: Swift.String?
+  @objc override dynamic public init()
+  @objc public init(imageData: Foundation.Data?)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @objcMembers final public class AtInfo : ObjectiveC.NSObject, Swift.Codable {
+  @objc final public var uin: Swift.Int
+  @objc final public var nickname: Swift.String
+  @objc final public func getMemtionFullString() -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+  final public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc public enum OssError : Swift.Int, Swift.Error {
+  case initializeServiceFailed
+  case signFailed
+  case accessDenied
+  case networkError
+  case notExist
+  case invalidArgument
+  case taskCancelled
+  case encryptFailed
+  case unknown
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public static var _nsErrorDomain: Swift.String {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum StorageType {
+  case base
+  case chat
+  public static func == (a: ACIMLib.StorageType, b: ACIMLib.StorageType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol OssCancellableTask {
+  func cancel()
+}
+public enum OssEncryptOptions {
+  case vernamEncrypt(Swift.String)
+  case vernamFixedEncrypt
+  case none
+}
+public protocol OssBehavior {
+  func configure(with ossInfo: ACIMLib.OssModel)
+  func uploadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, fileURL: Foundation.URL, storageType: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws
+  func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions, storageType: ACIMLib.StorageType, progress: ((Foundation.Progress) -> Swift.Void)?) async throws -> Foundation.Data
+  func copyObject(_ object: ACIMLib.OssCopyObjectMeta, storageType: ACIMLib.StorageType) async throws
+  func doesObjectExist(key: Swift.String, storageType: ACIMLib.StorageType) async -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers @objcMembers open class NotificationMessage : ACIMLib.MessageContent, ACIMLib.MessageNotificationProcessing {
+  @objc open func processForMessage(message: ACIMLib.ACChatMessage)
+  @objc override open class func persistentFlag() -> ACIMLib.MessagePersistent
+  @objc override open class func mediaFlag() -> Swift.Bool
+  @objc required dynamic public init()
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+public enum FileDownloadState : Swift.Equatable {
+  case progress(key: Swift.String, percent: Swift.Double)
+  case completed(key: Swift.String)
+  case failed(key: Swift.String, error: any Swift.Error)
+  case cancelled(key: Swift.String)
+  public var key: Swift.String {
+    get
+  }
+  public static func == (lhs: ACIMLib.FileDownloadState, rhs: ACIMLib.FileDownloadState) -> Swift.Bool
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class FileDownloader : ObjectiveC.NSObject {
+  @objc public static let shared: ACIMLib.FileDownloader
+  public func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions = .none, type: ACIMLib.StorageType, destination: Foundation.URL? = nil, ignoreCache: Swift.Bool = false)
+  @objc public func downloadChatFile(key: Swift.String, encryptKey: Swift.String?, destination: Foundation.URL? = nil, ignoreCache: Swift.Bool = false) async throws -> Foundation.Data
+  public func downloadFile(key: Swift.String, encryptOptions: ACIMLib.OssEncryptOptions = .none, type: ACIMLib.StorageType, destination: Foundation.URL? = nil, ignoreCache: Swift.Bool = false) async throws -> Foundation.Data
+  @objc public func isDownloading(_ key: Swift.String) -> Swift.Bool
+  public func cancelDownloading(_ key: Swift.String)
+  public func watchDownload(forKey key: Swift.String) -> Combine.AnyPublisher<ACIMLib.FileDownloadState, Swift.Never>
+  @objc deinit
+}
+@objc public enum ACConnectionState : Swift.Int {
+  case connected = 0
+  case disconnected
+  case unreachable
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension ACIMLib.ACConversationType : Swift.Equatable {}
+extension ACIMLib.ACConversationType : Swift.Hashable {}
+extension ACIMLib.ACConversationType : Swift.RawRepresentable {}
+extension ACIMLib.ACConversation.ACMessageSearchDirection : Swift.Equatable {}
+extension ACIMLib.ACConversation.ACMessageSearchDirection : Swift.Hashable {}
+extension ACIMLib.ACConversation.ACMessageSearchDirection : Swift.RawRepresentable {}
+extension ACIMLib.ACMessageFetchHistoryDirection : Swift.Equatable {}
+extension ACIMLib.ACMessageFetchHistoryDirection : Swift.Hashable {}
+extension ACIMLib.ACMessageFetchHistoryDirection : Swift.RawRepresentable {}
+extension ACIMLib.ACErrorCode : Swift.Equatable {}
+extension ACIMLib.ACErrorCode : Swift.Hashable {}
+extension ACIMLib.ACErrorCode : Swift.RawRepresentable {}
+extension ACIMLib.ReceivedStatus : Swift.Equatable {}
+extension ACIMLib.ReceivedStatus : Swift.Hashable {}
+extension ACIMLib.ReceivedStatus : Swift.RawRepresentable {}
+extension ACIMLib.MessagePersistent : Swift.Equatable {}
+extension ACIMLib.MessagePersistent : Swift.Hashable {}
+extension ACIMLib.MessagePersistent : Swift.RawRepresentable {}
+extension ACIMLib.ACChatType : Swift.Equatable {}
+extension ACIMLib.ACChatType : Swift.Hashable {}
+extension ACIMLib.ACChatType : Swift.RawRepresentable {}
+extension ACIMLib.ACMessageStatus : Swift.Equatable {}
+extension ACIMLib.ACMessageStatus : Swift.Hashable {}
+extension ACIMLib.ACMessageStatus : Swift.RawRepresentable {}
+extension ACIMLib.ACMessageDirection : Swift.Equatable {}
+extension ACIMLib.ACMessageDirection : Swift.Hashable {}
+extension ACIMLib.ACMessageDirection : Swift.RawRepresentable {}
+extension ACIMLib.ACPushRemindType : Swift.Equatable {}
+extension ACIMLib.ACPushRemindType : Swift.Hashable {}
+extension ACIMLib.ACPushRemindType : Swift.RawRepresentable {}
+extension ACIMLib.ChatTextStyleAttributeType : Swift.Equatable {}
+extension ACIMLib.ChatTextStyleAttributeType : Swift.Hashable {}
+extension ACIMLib.ChatTextStyleAttributeType : Swift.RawRepresentable {}
+extension ACIMLib.OssError : Swift.Equatable {}
+extension ACIMLib.OssError : Swift.Hashable {}
+extension ACIMLib.OssError : Swift.RawRepresentable {}
+extension ACIMLib.StorageType : Swift.Equatable {}
+extension ACIMLib.StorageType : Swift.Hashable {}
+extension ACIMLib.ACConnectionState : Swift.Equatable {}
+extension ACIMLib.ACConnectionState : Swift.Hashable {}
+extension ACIMLib.ACConnectionState : Swift.RawRepresentable {}

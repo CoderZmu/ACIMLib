@@ -1,0 +1,11 @@
+framework module ACIMLib {
+  umbrella header "ACIMLib.h"
+  export *
+
+  module * { export * }
+}
+
+module ACIMLib.Swift {
+  header "ACIMLib-Swift.h"
+  requires objc
+}
