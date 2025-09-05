@@ -32,6 +32,7 @@ Pod::Spec.new do |spec|
   
 
   spec.frameworks = ['Foundation', 'UIKit', 'Security']
+  spec.libraries = ['resolv']
   
   spec.pod_target_xcconfig = {
     'FRAMEWORK_SEARCH_PATHS' => '$(inherited)',
