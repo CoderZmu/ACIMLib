@@ -413,6 +413,7 @@ public struct OssCopyObjectMeta {
   public func initializeSDK(with options: ACIMLib.ACOptions) -> ACIMLib.ACError?
   public func setServerInfo(_ imServer: Swift.String)
   public func login(withUsername username: Swift.Int, token: Swift.String, completion: @escaping (Swift.String, ACIMLib.ACError?) -> Swift.Void)
+  public func forceReconnect()
   public func renewToken(_ newToken: Swift.String) -> ACIMLib.ACError?
   public func logout(_ isUnbindDeviceToken: Swift.Bool, completion: @escaping (ACIMLib.ACError?) -> Swift.Void)
   public func bindPushTokens(deviceToken: Swift.String, pushToken: Swift.String?) async throws
