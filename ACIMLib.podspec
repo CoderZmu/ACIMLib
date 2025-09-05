@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "ACIMLib"
-  spec.version      = "1.0.3"
+  spec.version      = "1.0.0"
   spec.summary      = "ACIMLib framework with dependencies"
   spec.description  = <<-DESC
                       ACIMLib is a dynamic framework that provides IM functionality.
